@@ -46,7 +46,7 @@ def iter_corpus(__cached=[]):
     Returns an iterable of `Datapoint`s with the contents of train.tsv.
     """
     if not __cached:
-        __cached.extend(_iter_data_file("rawdata.tsv")) # file name
+        __cached.extend(_iter_data_file("trainset")) # file name
     return __cached
 
 def make_train_test_split(seed, proportion=0.9):
@@ -111,7 +111,7 @@ def exportToFile(proportion):
         else:
             train.append(data[i])
    # (train,test)=make_train_test_split(seed='fighter',proportion=0.7)
-    fieldnames=['tweet.id','pub.date.GMT','content','author.name','author.nickname','rating1','rating2','rating3','rating4','rating5','rating6','rating7','rating8']
+    fieldnames=['tweet.id','pub.date.GMT','content','author.name','author.nickname','rating.1','rating.2','rating.3','rating.4','rating.5','rating.6','rating.7','rating.8']
     with open('./data/trainset','wb') as f1:
         wr=csv.writer(f1,delimiter='\t')
         wr.writerow(fieldnames)
@@ -126,4 +126,4 @@ def exportToFile(proportion):
 
     print 'finish export!'
 
-exportToFile(proportion=0.7)
+#exportToFile(proportion=0.7)
