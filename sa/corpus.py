@@ -80,7 +80,7 @@ def make_train_test_split(seed, proportion=0.9):
     return train, test
 
 def exportToFile(proportion):
-    path = os.path.join(DATA_PATH, 'rawdata.tsv')
+    path = os.path.join(DATA_PATH, 'test.tsv')
     it = csv.reader(open(path).read().splitlines(), delimiter="\t")
     row = next(it)  # Drop column names
 
@@ -113,13 +113,13 @@ def exportToFile(proportion):
    # (train,test)=make_train_test_split(seed='fighter',proportion=0.7)
     fieldnames=['tweet.id','pub.date.GMT','content','author.name','author.nickname','rating1','rating2','rating3','rating4','rating5','rating6','rating7','rating8']
     with open('./data/trainset','wb') as f1:
-        wr=csv.writer(f1)
+        wr=csv.writer(f1,delimiter='\t')
         wr.writerow(fieldnames)
         for datapoint in train:
             wr.writerow(datapoint)
 
     with open('./data/testset','wb') as f2:
-        wr=csv.writer(f2)
+        wr=csv.writer(f2,delimiter='\t')
         wr.writerow(fieldnames)
         for datapoint in test:
             wr.writerow(datapoint)
