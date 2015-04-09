@@ -80,7 +80,7 @@ def make_train_test_split(seed, proportion=0.9):
     return train, test
 
 def exportToFile(proportion):
-    path = os.path.join(DATA_PATH, 'test.tsv')
+    path = os.path.join(DATA_PATH, 'rawdata.tsv')
     it = csv.reader(open(path).read().splitlines(), delimiter="\t")
     row = next(it)  # Drop column names
 
