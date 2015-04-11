@@ -19,6 +19,8 @@ def _iter_data_file(filename):
     for row in it:
         ratings=row[5:]
         data=row[:5]
+        if data[0]=="936696674":
+            stop=0
         data.append(getLabel(ratings))
         yield Datapoint(*data)
 
@@ -29,25 +31,32 @@ def getLabel(ratings):
     cnt=[0]*len(labels)
     for rate in ratings:
         cnt[labels.index(rate)]+=1
-        if cnt[labels.index(rate)]>len(labels)/2.0:
+        if cnt[labels.index(rate)]>len(ratings)/2.0:
             return rate
     maxL=max(cnt)
-    # n=0
-    # for c in cnt:
-    #     if c==maxL:
-    #         n+=1
-    # if n==1:
-    return labels[cnt.index(maxL)]
+    randomset=[]
+    for i in range(len(cnt)):
+        c=cnt[i]
+        if c==maxL:
+             randomset.append(labels[i])
+
+    return random.sample(randomset,1)[0]
     # else:
     #     return 3
 
 def iter_corpus(__cached=[]):
     """
-    Returns an iterable of `Datapoint`s with the contents of train.tsv.
+    Returns an iterable of `Datapoint`s with the contents of trainset
     """
     if not __cached:
-        __cached.extend(_iter_data_file("trainset")) # file name
+        __cached.extend(_iter_data_file("test.tsv")) # file name
     return __cached
+
+def iter_test_corpus(tagged=False):
+    """
+    Returns an iterable of `Datapoint`s with the contents of testset
+    """
+    return list(_iter_data_file("testset"))
 
 def make_train_test_split(seed, proportion=0.9):
     """
