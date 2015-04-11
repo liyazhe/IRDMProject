@@ -19,8 +19,6 @@ def _iter_data_file(filename):
     for row in it:
         ratings=row[5:]
         data=row[:5]
-        if data[0]=="936696674":
-            stop=0
         data.append(getLabel(ratings))
         yield Datapoint(*data)
 
@@ -49,7 +47,7 @@ def iter_corpus(__cached=[]):
     Returns an iterable of `Datapoint`s with the contents of trainset
     """
     if not __cached:
-        __cached.extend(_iter_data_file("test.tsv")) # file name
+        __cached.extend(_iter_data_file("trainset")) # file name
     return __cached
 
 def iter_test_corpus(tagged=False):
