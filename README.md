@@ -36,15 +36,15 @@ How to use
 
    - for cross validation of the training data, run:
 
-   crossvalidation.py data/model.json
+   python sa/crossvalidation.py data/model.json
 
    - for analysis, run:
 
-   analysis.py data/model.json
+   python sa/analysis.py data/model.json
 
    - for training and predict test data, run:
 
-   main.py data/model.json
+   python sa/main.py data/model.json
 
 
 Model configuration
