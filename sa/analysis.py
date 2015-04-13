@@ -54,7 +54,7 @@ if __name__ == "__main__":
         X=et.transform(datapoints)
         for datap in X:
             for w in datap.split():
-                vocabulary.add(w)
+                vocabulary.add(w.lower())
         vocabulary=list(vocabulary)
         vocabulary.sort()
         with open('./data/vocabulary','wb') as f:

@@ -32,13 +32,14 @@ def getLabel(ratings):
         if cnt[labels.index(rate)]>len(ratings)/2.0:
             return rate
     maxL=max(cnt)
-    randomset=[]
-    for i in range(len(cnt)):
-        c=cnt[i]
-        if c==maxL:
-             randomset.append(labels[i])
+    #randomset=[]
+    #for i in range(len(cnt)):
+    #    c=cnt[i]
+    #    if c==maxL:
+    #         randomset.append(labels[i])
 
-    return random.sample(randomset,1)[0]
+    #return random.sample(randomset,1)[0]
+    return labels[cnt.index(maxL)]
     # else:
     #     return 3
 

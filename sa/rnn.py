@@ -17,7 +17,7 @@ class RNN:
     alpha: parameter that balancing the reconstruction cost and labelling cost
     lambdas: degree of regularization
     '''
-    def __init__(self, d,cat,vocab,alpha,words_vectors,lambdaW,lambdaCat,lambdaL,iter):
+    def __init__(self, d,cat,vocab,alpha,words_vectors,lambdaW,lambdaCat,lambdaL,iter,top=20):
         # initialse parameters to be uniform distribution [-r,r]
         # where r is a small number 0.01
         r=np.sqrt(6)/np.sqrt(2*d+1)
@@ -51,6 +51,7 @@ class RNN:
         self.lambdaL=lambdaL
         self.postClassifier=LogisticRegression(penalty='l2',multi_class='multinomial',C=10**6,solver='lbfgs')
         self.iter=iter
+        self.top=top
 
     def combineParams(self):
         d=self.d
@@ -473,30 +474,32 @@ class RNN:
                 # Eq. (7) in the paper (for special case of 1d label)
                 #sm = sigmoid(np.dot(Wlab,p_norm1) + blab)
                 sm=softmax(np.dot(self.Wlab,p_norm1) + self.blab)
-                max_score=max(sm)
-                ind=list(sm).index(max_score)
-                min_score=min(result_score[ind])
-                if max_score>min_score:
-                    min_ind=result_score[ind].index(min_score)
-                    result_score[ind][min_ind]=max_score
-                    if j<sl:
-                        result_word[ind][min_ind]=vocabulary[x[j]]
-                    else:
-                        stk=[]
-                        stk.extend(list(kids))
-                        stk.reverse()
-                        words=[]
-                        while len(stk)!=0:
-                            current=stk.pop()
-                            if current<sl:
-                                words.append(vocabulary[x[current]])
-                            else:
-                                toExtend=[]
-                                toExtend.extend(list(allKids[i][current]))
-                                toExtend.reverse()
-                                stk.extend(toExtend)
+                #max_score=max(sm)
+                for ind in range(self.cat):
+                    max_score=sm[ind]
+                    #ind=list(sm).index(max_score)
+                    min_score=min(result_score[ind])
+                    if max_score>min_score:
+                        min_ind=result_score[ind].index(min_score)
+                        result_score[ind][min_ind]=max_score
+                        if j<sl:
+                            result_word[ind][min_ind]=vocabulary[x[j]]
+                        else:
+                            stk=[]
+                            stk.extend(list(kids))
+                            stk.reverse()
+                            words=[]
+                            while len(stk)!=0:
+                                current=stk.pop()
+                                if current<sl:
+                                    words.append(vocabulary[x[current]])
+                                else:
+                                    toExtend=[]
+                                    toExtend.extend(list(allKids[i][current]))
+                                    toExtend.reverse()
+                                    stk.extend(toExtend)
 
-                        result_word[ind][min_ind]=' '.join(words)
+                            result_word[ind][min_ind]=' '.join(words)
         return (result_score,result_word)
 
 
@@ -510,7 +513,7 @@ class RNN:
         vectors1=self.unsupAnalysePCA()
         vectors2=self.unsupAnalysePCA()
 
-        (score,words)=self.supAnalyser(X,freq,vocabulary,10)
+        (score,words)=self.supAnalyser(X,freq,vocabulary,self.top)
         return (vectors1,vectors2,score,words)
 
 

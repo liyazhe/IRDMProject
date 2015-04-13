@@ -21,7 +21,7 @@ def analyse(factory):
     data=iter_corpus()
     predictor=factory()
     predictor.fit(data)
-    p1=ExtractText()
+    p1=ExtractText(True)
     X1=p1.transform(data)
     p2=EncodingText(predictor.vocabulary)
     p2.fit(X1)
@@ -65,17 +65,18 @@ def visualise(v,vocabulary,lb):
 
     # draw
     plt.scatter(x,y,c=cl)
+    blue_patch = mpatches.Patch(color='blue', label='neg')
+    yellow_patch = mpatches.Patch(color='yellow', label='pos')
+    red_patch = mpatches.Patch(color='red', label='mix')
+    green_patch = mpatches.Patch(color='green', label='others')
+    plt.legend([blue_patch,yellow_patch,red_patch,green_patch],labels)
+
     for label, a, b in zip(vocabulary, x, y):
         plt.annotate(
             label,
             xy = (a, b), xytext = (-5, 5),
             textcoords = 'offset points', ha = 'right', va = 'bottom',
             bbox = dict(boxstyle = 'round,pad=0.5', fc = 'yellow', alpha = 0.25),size=10)
-    blue_patch = mpatches.Patch(color='blue', label='neg')
-    yellow_patch = mpatches.Patch(color='yellow', label='pos')
-    red_patch = mpatches.Patch(color='red', label='mix')
-    green_patch = mpatches.Patch(color='green', label='others')
-    plt.legend([blue_patch,yellow_patch,red_patch,green_patch],labels)
     plt.show()
 
     # print to console

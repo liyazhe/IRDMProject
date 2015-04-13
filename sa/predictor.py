@@ -98,13 +98,13 @@ class PhraseSentimentPredictor:
                 self.vocabulary.append(line[0])
 
         # Build pre-processing common to every extraction
-        pipeline1 = [ExtractText()]
+        pipeline1 = [ExtractText(lowercase)]
         pipeline1.append(EncodingText(self.vocabulary))
         pipeline=make_pipeline(*pipeline1)
 
         # Build classifier and put everything togheter
         if classifier_args is None:
-            classifier_args = {'lambdaL': 0.0001, 'd': 50, 'cat': 4, 'lambdaCat': 1e-07, 'alpha': 0.2, 'lambdaW': 1e-05,'iter':70}
+            classifier_args = {'lambdaL': 0.0001, 'd': 50, 'cat': 4, 'lambdaCat': 1e-07, 'alpha': 0.2, 'lambdaW': 1e-05,'iter':70,'top':20}
         if 'd' in classifier_args:
             d=classifier_args['d']
         else:
